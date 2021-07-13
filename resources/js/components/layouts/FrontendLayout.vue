@@ -3,13 +3,24 @@
         <v-navigation-drawer v-model="drawer" app>
             <v-list-item>
                 <v-list-item-content>
-                    <v-list-item-title>
+                    <v-list-item-title class="d-flex flex-row justify-space-between align-center">
                         <img :src="$root.baseurl + '/images/logo1.png'" style="width: 3em" alt="">
-                        Archive Application
+                        <h3>Codecamp App</h3>
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
+            <v-col cols="12" md="12">
+                <v-text-field
+                    @keyup="searchArchive"
+                    v-model="searchdata"
+                    label="Search"
+                    placeholder="What are you like to see"
+                    outlined
+                    dense
+                    append-icon="mdi-magnify"
+                ></v-text-field>
+            </v-col>
             <v-list nav dense>
                 <v-list-item link to="/">
                     <v-list-item-icon>
@@ -30,10 +41,8 @@
             </v-list>
         </v-navigation-drawer>
         <v-app-bar app
-            absolute
             color="white"
-            elevate-on-scroll
-        >
+            elevate-on-scroll>
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
         </v-app-bar>
             <v-main>
@@ -56,25 +65,30 @@
                 loading:true,
                 drawer:null,
                 menus: [],
+                searchdata:null,
             }
         },
         methods:{
             asyncData(){
+                this.$event.$emit('loading',true)
                 axios.get('/get-archive').then(res => {
                     this.menus = res.data
                     setTimeout(() => {
-                        this.loading = false
-                    },200)
+                        this.$event.$emit('loading',false)
+                    },1000)
+                })
+            },
+            async searchArchive(){
+                await axios.get('/search-menus',{params:{key:this.searchdata}}).then(res => {
+                    this.menus = res.data
                 })
             }
         },
-        watch: {
-            $route: {
-                handler: "asyncData",
-                immediate: true
-            }
-        },
         created() {
+            this.$event.$on('loading',playload => {
+                this.loading = playload
+            })
+
             this.asyncData();
         }
     }

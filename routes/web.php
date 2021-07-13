@@ -12,19 +12,21 @@ Route::get('/get-code/{slug}', [ArchiveController::class, 'getCodeforView']);
 
 
 // backend router
-Route::view('/admin/login', 'layouts.backend');
+Route::view('/admin/login', 'layouts.backend')->name('adminlogin');
 Route::view('/admin/sign-up', 'layouts.backend');
-Route::get('logout',function (){
-   dd(\Illuminate\Support\Facades\Session::get('user'));
-});
-Route::group(['middleware' => 'CheckLogin'], function () {
+
+Route::group(['middleware' => 'auth','prefix'=>'admin'], function () {
     //view
-    Route::view('/admin/dashboard', 'layouts.backend');
-    Route::view('/admin/archive-create', 'layouts.backend');
+    Route::view('/dashboard', 'layouts.backend');
+    Route::view('/archive-create', 'layouts.backend');
 
     //api
     Route::post('/store-archive', [ArchiveController::class, 'store']);
-    Route::get('/get-archive', [ArchiveController::class, 'index']);
     Route::post('/registration', [Controller::class, 'registration']);
-    Route::post('/login', [Controller::class, 'login']);
 });
+Route::get('/get-archive', [ArchiveController::class, 'index']);
+Route::get('/search-menus',[ArchiveController::class,'searchArchive']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

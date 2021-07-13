@@ -75,4 +75,11 @@ class ArchiveController extends Controller
     {
         //
     }
+
+    public function searchArchive(Request $request)
+    {
+        $key = $request->key;
+        $data = Archive::where('title','like',"%{$key}%")->get();
+        return response()->json($data,200);
+    }
 }

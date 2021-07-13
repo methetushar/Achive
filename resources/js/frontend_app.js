@@ -7,6 +7,8 @@ import vuetify from './vuetify';
 import router from "./router/frontend_routes";
 Vue.component('frontend-app', require('./views/app/FrontendApp').default);
 
+const eventBus = new Vue
+Vue.prototype.$event = eventBus
 
 const app = new Vue({
     el: '#app',

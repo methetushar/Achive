@@ -27,6 +27,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "CodeViewer",
   data: function data() {
@@ -52,15 +63,26 @@ __webpack_require__.r(__webpack_exports__);
       fText = fText.replace('-', ' ');
       fText = fText.toLocaleLowerCase();
       return fText;
+    },
+    getViewData: function getViewData() {
+      var _this = this;
+
+      this.$event.$emit('loading', true);
+      axios.get('/get-code/' + this.$route.params.slug).then(function (res) {
+        _this.datas = res.data;
+      });
+      setTimeout(function () {
+        _this.$event.$emit('loading', false);
+      }, 1000);
     }
   },
-  created: function created() {
-    var _this = this;
-
-    axios.get('/get-code/' + this.$route.params.slug).then(function (res) {
-      _this.datas = res.data;
-    });
-  }
+  watch: {
+    $route: {
+      handler: "getViewData",
+      immediate: true
+    }
+  },
+  created: function created() {}
 });
 
 /***/ }),
@@ -86,6 +108,16 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".CodeMirror[data-v-7b335126] {\n  heig
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/***/ (() => {
+
+throw new Error("Module build failed: Error: ENOENT: no such file or directory, open 'P:\\archive\\node_modules\\css-loader\\dist\\runtime\\api.js'");
 
 /***/ }),
 
@@ -224,31 +256,24 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-container",
+    { attrs: { "fill-height": "" } },
     [
       _c(
-        "v-card",
-        { attrs: { height: "500", replace: "", flat: "" } },
+        "v-layout",
+        { attrs: { "align-center": "" } },
         [
           _c(
-            "v-card-title",
-            { staticClass: "text-h5 text--accent-2" },
+            "v-flex",
             [
-              _c("v-icon", [_vm._v("mdi-xml")]),
-              _vm._v("   Example Code\n        ")
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("v-divider"),
-          _vm._v(" "),
-          _c(
-            "v-card-text",
-            [
-              _c("v-icon", [_vm._v("mdi-pound")]),
-              _vm._v(" "),
-              _c("span", { staticClass: "red--text" }, [
-                _vm._v(_vm._s(_vm.textFormater(_vm.$route.params.slug)))
+              _c("h3", { staticClass: "display-3 text-capitalize" }, [
+                _vm._v(_vm._s(_vm.datas.title))
               ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "subheading mt-3" }, [
+                _vm._v(_vm._s(_vm.datas.description))
+              ]),
+              _vm._v(" "),
+              _c("v-divider", { staticClass: "my-3" }),
               _vm._v(" "),
               _c("codemirror", {
                 staticStyle: { height: "500px" },

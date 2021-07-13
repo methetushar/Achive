@@ -4,8 +4,9 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/',name:'home', component:()=>import('./../components/layouts/FrontendLayout'),
+    { path: '/', component:()=>import('./../components/layouts/FrontendLayout'),
         children:[
+            { path: '/',name:'home', component:()=>import('./../views/frontend/Home') },
             { path: '/code/:slug',name:'code', component:()=>import('./../views/frontend/CodeViewer') },
         ]
     },

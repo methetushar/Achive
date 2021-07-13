@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "simple-vue-validator": "^0.16.0",
         "vue-codemirror": "^4.0.6",
         "vue-router": "^3.5.2",
         "vuetify": "^2.5.4"
